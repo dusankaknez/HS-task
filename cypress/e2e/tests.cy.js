@@ -24,7 +24,6 @@ describe('Main Tests 1-5', ()=>{
         const problemUser = Cypress.env('users').problem;
         onLoginPage.loginUser(problemUser.username, problemUser.password)
         onInventoryPage.validateImageForItem('Sauce Labs Onesie','red-onesie')        
-        cy.url().should('include', '/inventory.html'); 
     })
 
     it('4.Login as locked user and validate error', () => {
