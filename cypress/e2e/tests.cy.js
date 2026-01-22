@@ -9,32 +9,34 @@ beforeEach('Open test application', ()=>{
 })
 
 describe('Main Tests 1-5', ()=>{
-
+       const standardUser = Cypress.env('users').standard;
     it('1. Login as standard user and check url', () => {
-        onLoginPage.loginUser('standard_user', 'secret_sauce')
+        onLoginPage.loginUser(standardUser.username, standardUser.password)
         cy.url().should('include', '/inventory.html');
     })
     it('2.Login as standard user, add to cart and validate remove button', () => {
-        onLoginPage.loginUser('standard_user', 'secret_sauce')        
+        onLoginPage.loginUser(standardUser.username, standardUser.password)
         cy.url().should('include', '/inventory.html');
         onInventoryPage.addItemToCart('Sauce Labs Backpack')
     })
     // This test should fail
     it('3.Login as problem user and validate image for item', () => {
-        onLoginPage.loginUser('problem_user', 'secret_sauce')
+        const problemUser = Cypress.env('users').problem;
+        onLoginPage.loginUser(problemUser.username, problemUser.password)
         onInventoryPage.validateImageForItem('Sauce Labs Onesie','red-onesie')        
         cy.url().should('include', '/inventory.html'); 
     })
 
     it('4.Login as locked user and validate error', () => {
-        onLoginPage.loginUser('locked_out_user', 'secret_sauce')
+        const lockedUser = Cypress.env('users').locked;
+        onLoginPage.loginUser(lockedUser.username, lockedUser.password)
         cy.get('[data-test="error"]').should('have.text', 'Epic sadface: Sorry, this user has been locked out.');
        
     })
     // This test should fail
-    it.only('5.Login as error user and validate error', () => {
-        onLoginPage.loginUser('error_user', 'secret_sauce')
+    it('5.Login as error user and validate error', () => {
+        const errorUser = Cypress.env('users').error;
+        onLoginPage.loginUser(errorUser.username, errorUser.password)
         onInventoryPage.addItemToCart('Sauce Labs Fleece Jacket')
-  
     })
 })
